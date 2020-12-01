@@ -1,14 +1,15 @@
-import * as dotenv from "dotenv"
-import path from "path"
-dotenv.config({ path: path.join(__dirname + "../.env" )})
+var path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '..', '.env' )})
 
-export const config = {
+const config = {
     test_module: false,
     database: {
-        host: process.env.DB_HOST || "",
+        host: process.env.DB_HOST,
         port: 3306,
-        user: process.env.DB_USER || "",
+        user: process.env.DB_USER,
         password: process.env.DB_PASS,
         database: process.env.DATABASE,
     }
 }
+
+module.exports = config
