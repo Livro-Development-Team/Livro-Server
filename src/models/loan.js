@@ -1,4 +1,4 @@
-export const Loan = (sequelize, DataTypes) => {
+const Loan = (sequelize, DataTypes) => {
     sequelize.define('loan', {
         uuid: {
             type: DataTypes.STRING(50),
@@ -35,3 +35,5 @@ export const Loan = (sequelize, DataTypes) => {
     }
     )
 }
+
+module.exports = Loan

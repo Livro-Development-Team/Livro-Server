@@ -1,13 +1,12 @@
-import { Sequelize } from 'sequelize'
-import { config } from './database'
+var Sequelize = require('sequelize');
+var config = require('./database');
 
 const db = {};
 
-const sequelize = new Sequelize(
+var sequelize = new Sequelize(
     config.database.database,
     config.database.user,
     config.database.password,
-    config,
     {
         host: config.database.host,
         dialect: "mysql",
@@ -32,10 +31,10 @@ db.sequelize = sequelize
 db.Sequelize = Sequelize
 
 // Import model function from ../models/...js
-import { User } from '../models/user'
-import { Loan } from '../models/loan'
-import { Notice } from '../models/notice'
-import { Book } from '../models/book'
+var User = require('../models/user')
+var Loan = require('../models/loan')
+var Notice = require('../models/notice')
+var Book = require('../models/book')
 
 // Add model
 db.User = User(sequelize, Sequelize);

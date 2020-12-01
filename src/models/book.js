@@ -1,6 +1,6 @@
-import { Loan } from "./loan";
+const Loan = require("./loan")
 
-export const Book = (sequelize, DataTypes) => {
+const Book = (sequelize, DataTypes) => {
     const book = sequelize.define('book', {
         id : {
             type: DataTypes.STRING(10),
@@ -29,7 +29,7 @@ export const Book = (sequelize, DataTypes) => {
         image: {
             type: DataTypes.STRING(200),
             defaultValue:
-            "s3 저장소 이미지",
+            "https://images-na.ssl-images-amazon.com/images/I/417efBUAHCL._SX317_BO1,204,203,200_.jpg",
         },
         school: {
             type: DataTypes.STRING(20),
@@ -47,3 +47,4 @@ export const Book = (sequelize, DataTypes) => {
     }
     return book
 }
+module.exports = Book

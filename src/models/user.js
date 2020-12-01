@@ -1,6 +1,6 @@
-import { Notice } from './notice'
+var Notice = require('./notice')
 
-export const User = (sequelize, DataTypes) => {
+const User = (sequelize, DataTypes) => {
     const user = sequelize.define('user',
         {
             uuid : {
@@ -53,3 +53,5 @@ export const User = (sequelize, DataTypes) => {
     }
     return user
 }
+
+module.exports = User;

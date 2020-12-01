@@ -1,4 +1,4 @@
-export const Notice = (sequelize, DataTypes) => {
+const Notice = (sequelize, DataTypes) => {
     const notice = sequelize.define('notice', {
         uuid : {
             type: DataTypes.STRING(50),
@@ -33,3 +33,5 @@ export const Notice = (sequelize, DataTypes) => {
     });
     return notice
 }
+
+module.exports = Notice

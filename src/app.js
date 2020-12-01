@@ -20,8 +20,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Route handler
 app.use('/', usersRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,4 +39,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = app
