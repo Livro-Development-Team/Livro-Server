@@ -4,9 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// Set Router
 var usersRouter = require('./routes/users');
 
+// Set Sequelize
+const { sequelize } = require('./config/config')
+
 var app = express();
+sequelize.sync();
 
 // view engine setup
 app.use(logger('dev'));
@@ -16,6 +21,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', usersRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
