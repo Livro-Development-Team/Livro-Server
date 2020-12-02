@@ -1,8 +1,12 @@
 const router = require('express').Router();
+const user = require('./users')
+const admin = require('./admin')
+const notice = require('./notice')
+const book = require('./book')
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.use("/user", user)
+router.use("/admin", admin)
+router.use("/notice", notice)
+router.use("/book", book)
 
 module.exports = router;

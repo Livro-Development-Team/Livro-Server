@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 // Set Router
-var usersRouter = require('./routes/users');
+var routes = require('./routes')
 
 // Set Sequelize
 const { sequelize } = require('./config/config')
@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route handler
-app.use('/', usersRouter);
+app.use('/', routes)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
