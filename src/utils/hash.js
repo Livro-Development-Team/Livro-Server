@@ -8,4 +8,4 @@ const hashPassword = async (password) => {
 		.toString();
 };
 
-module.exports = hashPassword;
+module.exports = { hashPassword };

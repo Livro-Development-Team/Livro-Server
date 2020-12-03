@@ -4,12 +4,13 @@ const {
 	register,
 	getUserInfo,
 	getLoanList,
-} = require('../controllers/user');
+} = require('../controllers/user.js');
 const tryCatchMiddleware = require('../middlewares/tryCatch');
+
 /* GET users listing. */
-router.get('/', (req, res, next) => getUserInfo(req, res, next)); //user info - No, Name
-router.get('/loans', (req, res, next) => getLoanList(req, res, next)); //user book loans
-router.post('/', (req, res, next) => login(req, res, next)); //login
-router.post('/new', tryCatchMiddleware.Error(register)); //sign-up
+router.get('/', tryCatchMiddleware(getUserInfo)); //user info - No, Name
+router.get('/loans', tryCatchMiddleware(getLoanList)); //user book loans
+router.post('/', tryCatchMiddleware(login)); //login
+router.post('/new', tryCatchMiddleware(register)); //sign-up
 
 module.exports = router;

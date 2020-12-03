@@ -5,4 +5,4 @@ const mkId = async () => {
 	return id[2] + id[1] + id[0];
 };
 
-module.exports = mkId;
+module.exports = { mkId };

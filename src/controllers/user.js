@@ -1,9 +1,9 @@
 const { registerUser, findUser } = require('../services/user');
 
-const register = async (req, res, next) => {
+async function register(req, res, next) {
 	await registerUser(req.body);
 	res.status(201).end();
-};
+}
 
 async function login(req, res, next) {
 	const token = await findUser(req.body);
@@ -20,4 +20,4 @@ const getUserInfo = (req, res, next) => {
 	return;
 };
 
-module.exports = (register, login, getLoanList, getUserInfo);
+module.exports = { register, login, getLoanList, getUserInfo };
