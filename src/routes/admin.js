@@ -1,7 +1,9 @@
-const router = require('express').Router();
-const admin = require('../controllers/admin');
+const { adminAuth } = require('../controllers/admin');
+const tryCatchMiddleware = require('../middlewares/tryCatch');
 
-router.post('/auth'); //admin login
+const router = require('express').Router();
+
+router.post('/auth', tryCatchMiddleware(adminAuth)); //admin login
 router.post('/notice'); //write notice
 router.put('/notice/:id'); //update notice
 router.delete('/notice/:id'); //delete notice
