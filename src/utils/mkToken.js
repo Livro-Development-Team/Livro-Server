@@ -14,4 +14,4 @@ const mkAccess = async (uuid, admin, secret) => {
 	return token;
 };
 
-module.exports = mkAccess;
+module.exports = { mkAccess };

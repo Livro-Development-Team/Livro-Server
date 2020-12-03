@@ -1,4 +1,4 @@
-function tryCatchMiddleware(cb) {
+const tryCatchMiddleware = (cb) => {
 	return async (req, res, next) => {
 		try {
 			await cb(req, res, next);
@@ -7,6 +7,6 @@ function tryCatchMiddleware(cb) {
 			res.status(e.statusCode || 500).end();
 		}
 	};
-}
+};
 
 module.exports = tryCatchMiddleware;

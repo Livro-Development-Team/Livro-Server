@@ -2,6 +2,7 @@ const HttpError = require('../exception/exception');
 const db = require('../config/config');
 const { hashPassword } = require('../utils/hash');
 const { mkId } = require('../utils/mkId');
+const { mkAccess } = require('../utils/mkToken');
 
 const registerUser = async (userInfo) => {
 	userInfo.password = await hashPassword(userInfo.password);
@@ -31,4 +32,13 @@ const findUser = async (userInfo) => {
 	return await mkAccess(user.uuid, user.admin, process.env.JWT_SECRET_KEY);
 };
 
-module.exports = { registerUser, findUser };
+const getUserInfoService = async (id) => {
+	return await db.User.findOne({
+		where: {
+			uuid: id,
+		},
+		attributes: ['studentNo', 'name'],
+	});
+};
+
+module.exports = { registerUser, findUser, getUserInfoService };
