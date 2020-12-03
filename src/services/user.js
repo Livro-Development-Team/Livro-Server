@@ -3,6 +3,7 @@ const db = require('../config/config');
 const { hashPassword } = require('../utils/hash');
 const { mkId } = require('../utils/mkId');
 const { mkAccess } = require('../utils/mkToken');
+const { getBookInfo } = require('./book');
 
 const registerUser = async (userInfo) => {
 	userInfo.password = await hashPassword(userInfo.password);
@@ -41,4 +42,39 @@ const getUserInfoService = async (id) => {
 	});
 };
 
-module.exports = { registerUser, findUser, getUserInfoService };
+const getUserByUuid = async (id) => {
+	return await db.User.findOne({
+		where: { uuid: id },
+	});
+};
+
+const getBookLoans = async (uuid) => {
+	const list = await db.Loan.findAll({
+		where: {
+			user_uuid: uuid,
+		},
+	});
+
+	const result = await Promise.all(
+		list.map(async (value) => {
+			const book = await getBookInfo(value.bookId);
+			return {
+				title: book.title,
+				loanDate: book.createAt,
+				returnDate: book.deletedAt,
+				image: book.image,
+				location: book.location,
+			};
+		}),
+	);
+
+	return { book: result };
+};
+
+module.exports = {
+	registerUser,
+	findUser,
+	getUserInfoService,
+	getUserByUuid,
+	getBookLoans,
+};

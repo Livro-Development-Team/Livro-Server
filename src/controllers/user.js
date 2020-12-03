@@ -2,6 +2,7 @@ const {
 	registerUser,
 	findUser,
 	getUserInfoService,
+	getBookLoans,
 } = require('../services/user');
 
 async function register(req, res, next) {
@@ -16,8 +17,10 @@ const login = async (req, res, next) => {
 	});
 };
 
-const getLoanList = (req, res, next) => {
-	return;
+const getLoanList = async (req, res, next) => {
+	const uuid = req['decoded']['uuid'];
+	const loanList = await getBookLoans(uuid);
+	res.status(200).json(loanList);
 };
 
 const getUserInfo = async (req, res, next) => {
