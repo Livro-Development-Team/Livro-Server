@@ -51,4 +51,4 @@ const writeNoticeService = async (noticeInfo, uuid, admin) => {
 		school: user.school,
 	});
 };
-module.exports = { adminAuthService, writeNoticeService };
+module.exports = { adminAuthService, writeNoticeService, findOneUserByUuid };

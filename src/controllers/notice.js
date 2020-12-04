@@ -1,12 +1,18 @@
-const getLatestNotice = (req, res, next) => {
-	return;
+const NoticeService = require('../services/notice');
+
+const getLatestNotice = async (req, res, next) => {
+	const uuid = req['decoed'].uuid;
+	const latestNotice = await NoticeService.getLatestNoticeService(uuid);
 };
 
-const getNoticeList = (req, res, next) => {
-	return;
+const getNoticeList = async (req, res, next) => {
+	const uuid = req['decoded'].uuid;
+	const page = req.query.page;
+	const noticeList = await NoticeService.getNoticeListService(uuid, page);
+	res.status(200).json(noticeList);
 };
 
-const getDetailNotice = (req, res, next) => {
+const getDetailNotice = async (req, res, next) => {
 	return;
 };
 
