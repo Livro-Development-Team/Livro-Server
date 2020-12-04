@@ -6,4 +6,10 @@ const adminAuth = async (req, res, next) => {
 	res.status(200).json({ accessToken });
 };
 
-module.exports = { adminAuth };
+const writeNotice = async (req, res, next) => {
+	const { uuid, admin } = req['decoded'];
+	await AdminService.writeNoticeService(req.body, uuid, admin);
+	res.status(201).end();
+};
+
+module.exports = { adminAuth, writeNotice };

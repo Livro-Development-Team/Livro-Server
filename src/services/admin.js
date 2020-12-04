@@ -1,6 +1,7 @@
 const db = require('../config/config');
 const HttpError = require('../exception/exception');
 const { hashPassword } = require('../utils/hash');
+const { mkId } = require('../utils/mkId');
 const { mkAccess } = require('../utils/mkToken');
 
 const adminAuthService = async (adminAuthInfo, secret) => {
@@ -21,6 +22,14 @@ const findOneUser = async (userId) => {
 	}
 };
 
+const findOneUserByUuid = async (uuid) => {
+	try {
+		return db.User.findOne({ where: { uuid } });
+	} catch (e) {
+		throw new HttpError(404, 'User Not Found');
+	}
+};
+
 const passwordCompare = async (password, hashedPassword) => {
 	return (await hashPassword(password)) === hashedPassword;
 };
@@ -29,4 +38,17 @@ const isAdmin = async (admin) => {
 	if (!admin) throw new HttpError(409, 'User Not Admin');
 };
 
-module.exports = { adminAuthService };
+const writeNoticeService = async (noticeInfo, uuid, admin) => {
+	const noticeId = 'notice-' + (await mkId());
+	const { title, content } = noticeInfo;
+	const user = await findOneUserByUuid(uuid);
+	await isAdmin(admin);
+	await db.Notice.create({
+		uuid: noticeId,
+		title,
+		content,
+		userUuid: uuid,
+		school: user.school,
+	});
+};
+module.exports = { adminAuthService, writeNoticeService };
