@@ -1,8 +1,9 @@
 const NoticeService = require('../services/notice');
 
 const getLatestNotice = async (req, res, next) => {
-	const uuid = req['decoed'].uuid;
-	const latestNotice = await NoticeService.getLatestNoticeService(uuid);
+	const uuid = req['decoded'].uuid;
+	const notice = await NoticeService.getLatestNoticeService(uuid);
+	req.status(200).json(notice);
 };
 
 const getNoticeList = async (req, res, next) => {
@@ -13,7 +14,9 @@ const getNoticeList = async (req, res, next) => {
 };
 
 const getDetailNotice = async (req, res, next) => {
-	return;
+	const uuid = req.params.id;
+	const notice = await NoticeService.getDetailNoticeService(uuid);
+	res.status(200).json(notice);
 };
 
 module.exports = { getLatestNotice, getNoticeList, getDetailNotice };
