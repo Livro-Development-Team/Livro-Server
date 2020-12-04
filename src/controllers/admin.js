@@ -12,4 +12,18 @@ const writeNotice = async (req, res, next) => {
 	res.status(201).end();
 };
 
-module.exports = { adminAuth, writeNotice };
+const updateNotice = async (req, res, next) => {
+	const noticeId = req.params.id;
+	const { uuid, admin } = req['decoded'];
+	await AdminService.updateNoticeService(req.body, noticeId, uuid, admin);
+	res.status(200).end();
+};
+
+const deleteNotice = async (req, res, next) => {
+	const noticeId = req.params.id;
+	const { uuid, admin } = req['decoded'];
+	await AdminService.deleteNoticeService(noticeId, uuid, admin);
+	res.status(204).end();
+};
+
+module.exports = { adminAuth, writeNotice, updateNotice, deleteNotice };

@@ -51,4 +51,37 @@ const writeNoticeService = async (noticeInfo, uuid, admin) => {
 		school: user.school,
 	});
 };
-module.exports = { adminAuthService, writeNoticeService, findOneUserByUuid };
+
+const updateNoticeService = async (updateNoticeInfo, noticeId, uuid, admin) => {
+	const { title, content } = updateNoticeInfo;
+	await isAdmin(admin);
+	const notice = await findOneNotice(noticeId);
+	if (notice.userUuid !== uuid) {
+		throw new HttpError(409, 'Not My School Notice');
+	}
+	await notice.update({ title, content });
+};
+
+const findOneNotice = async (noticeId) => {
+	try {
+		return await db.Notice.findOne({ where: { uuid: noticeId } });
+	} catch (e) {
+		throw new HttpError(404, 'User Not Found');
+	}
+};
+
+const deleteNoticeService = async (noticeId, uuid, admin) => {
+	await isAdmin(admin);
+	const notice = await findOneNotice(noticeId);
+	if (notice.userUuid !== uuid) {
+		throw new HttpError(409, 'Not My School Notice');
+	}
+	await notice.destroy();
+};
+module.exports = {
+	adminAuthService,
+	writeNoticeService,
+	findOneUserByUuid,
+	updateNoticeService,
+	deleteNoticeService,
+};
