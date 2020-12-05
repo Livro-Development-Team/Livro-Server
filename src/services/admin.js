@@ -3,6 +3,7 @@ const HttpError = require('../exception/exception');
 const { hashPassword } = require('../utils/hash');
 const { mkId } = require('../utils/mkId');
 const { mkAccess } = require('../utils/mkToken');
+const { Op } = require('sequelize');
 
 const adminAuthService = async (adminAuthInfo, secret) => {
 	const { userId, password } = adminAuthInfo;
@@ -78,10 +79,35 @@ const deleteNoticeService = async (noticeId, uuid, admin) => {
 	}
 	await notice.destroy();
 };
+
+const getLoanedBooksService = async (uuid, admin, page, date) => {
+	await isAdmin(admin);
+	const user = await findOneUserByUuid(uuid);
+	const loans = await db.Loan.findAll({
+		where: { school: user.school, deletedAt: { [Op.gte]: date } },
+		attributes: ['uuid'],
+		include: [
+			{
+				model: db.User,
+				attributes: ['name', 'studentNo'],
+			},
+			{
+				model: db.Book,
+				attributes: ['title', 'author', 'publisher', 'category', 'image'],
+			},
+		],
+		order: [['createdAt', 'DESC']],
+		limit: 3,
+		offset: (page - 1) * 3,
+	});
+	if (loans.length === 0) throw new HttpError(400, 'No Loan');
+	return loans;
+};
 module.exports = {
 	adminAuthService,
 	writeNoticeService,
 	findOneUserByUuid,
 	updateNoticeService,
 	deleteNoticeService,
+	getLoanedBooksService,
 };

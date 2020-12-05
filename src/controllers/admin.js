@@ -26,4 +26,22 @@ const deleteNotice = async (req, res, next) => {
 	res.status(204).end();
 };
 
-module.exports = { adminAuth, writeNotice, updateNotice, deleteNotice };
+const getLoanedBooks = async (req, res, next) => {
+	const { uuid, admin } = req['decoded'];
+	const { page, date } = req.query;
+	const books = await AdminService.getLoanedBooksService(
+		uuid,
+		admin,
+		page,
+		date,
+	);
+	res.status(200).json(books);
+};
+
+module.exports = {
+	adminAuth,
+	writeNotice,
+	updateNotice,
+	deleteNotice,
+	getLoanedBooks,
+};
