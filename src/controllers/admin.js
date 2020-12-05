@@ -49,6 +49,14 @@ const getDelaiedBooks = async (req, res, next) => {
 	);
 	res.status(200).json(books);
 };
+
+const returnBook = async (req, res, next) => {
+	const admin = req['decoded'];
+	const uuid = req.params.id;
+	await AdminService.returnBookService(admin, uuid);
+	res.status(200).end();
+};
+
 module.exports = {
 	adminAuth,
 	writeNotice,
@@ -56,4 +64,5 @@ module.exports = {
 	deleteNotice,
 	getLoanedBooks,
 	getDelaiedBooks,
+	returnBook,
 };

@@ -128,6 +128,11 @@ const getDelaiedBooksService = async (uuid, admin, page, date) => {
 	return loans;
 };
 
+const returnBookService = async (admin, uuid) => {
+	await isAdmin(admin);
+	await db.Loan.destroy({ where: { uuid } });
+};
+
 module.exports = {
 	adminAuthService,
 	writeNoticeService,
@@ -136,4 +141,5 @@ module.exports = {
 	deleteNoticeService,
 	getLoanedBooksService,
 	getDelaiedBooksService,
+	returnBookService,
 };
