@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const db = require('../config/config');
 
-const searchByWord = async (word, page, school) => {
+const searchByWordService = async (word, page, school) => {
 	const { rows, count } = await db.Book.findAndCoundAll({
 		where: {
 			title: {
@@ -46,7 +46,7 @@ const getLoanState = async (book) => {
 	return { loanable: loanable, returnDate: returnDate };
 };
 
-const getBookInfo = async (bookId) => {
+const getBookInfoService = async (bookId) => {
 	return await db.Book.findOne({
 		where: {
 			id: id,
@@ -54,4 +54,4 @@ const getBookInfo = async (bookId) => {
 	});
 };
 
-module.exports = { searchByWord };
+module.exports = { searchByWordService, getBookInfoService };
