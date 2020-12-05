@@ -54,4 +54,30 @@ const getBookInfoService = async (bookId) => {
 	});
 };
 
-module.exports = { searchByWordService, getBookInfoService };
+const borrowBookService = async (borrowBookInfo) => {
+	const count = await db.Loan.count({
+		where: {
+			user_uuid: borrowBookInfo.userUuid,
+		},
+	});
+	if (count >= 3) throw new HttpError(409, 'already loaned 3books');
+
+	const book = await db.Book.findOne({
+		where: {
+			id: borrowBookInfo.id,
+		},
+	});
+
+	const { loanable, returnDate } = await getLoanState(book);
+	if (!loanable) throw new HttpError(400, 'already loaned book');
+
+	await Loan.create({
+		uuid: 'loan-' + (await mkId()),
+		userUuid: borrowBookInfo.userUuid,
+		bookId: borrowBookInfo.id,
+		createdAt: borrowBookInfo.loanDate,
+		deletedAt: borrowBookInfo.returnDate,
+		school: book.school,
+	});
+};
+module.exports = { searchByWordService, getBookInfoService, borrowBookService };
