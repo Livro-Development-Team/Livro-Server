@@ -4,6 +4,7 @@ const {
 	updateNotice,
 	deleteNotice,
 	getLoanedBooks,
+	getDelaiedBooks,
 } = require('../controllers/admin');
 const tryCatchMiddleware = require('../middlewares/tryCatch');
 const authMiddleware = require('../middlewares/auth');
@@ -15,6 +16,6 @@ router.put('/notice/:id', authMiddleware, tryCatchMiddleware(updateNotice)); //u
 router.delete('/notice/:id', authMiddleware, tryCatchMiddleware(deleteNotice)); //delete notice
 router.get('/loan', authMiddleware, tryCatchMiddleware(getLoanedBooks)); //get loan list
 router.get('/loan/:id'); //return book
-router.get('/loan/delay'); //get delay list
+router.get('/loan/delay', authMiddleware, tryCatchMiddleware(getDelaiedBooks)); //get delay list
 
 module.exports = router;
