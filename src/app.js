@@ -1,16 +1,16 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
+const cors = require('cors');
 // Set Router
 var routes = require('./routes');
 
+// Set Express server App
+var app = express();
+
 // Set Sequelize
 const sequelize = require('./config/config').sequelize;
-
-var app = express();
 sequelize
 	.sync()
 	.then(() => {
@@ -25,6 +25,19 @@ sequelize
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+//Set CORS Middleware
+
+//Set CORS middleware with options // limit origin only for livro-frontend server
+// const reactServerPath = '';
+// const corsOptions = {
+// 	origin: `http://${reactServerPath}`,
+// 	credentials: true,
+// };
+// app.use(cors(reactServerPath))
+
+// Set CORS middlware for all domain
+app.use(cors());
 
 // set jwt secret key
 app.set('jwt-secret', process.env.JWT_SECRET_KEY);
