@@ -6,4 +6,4 @@
 ## Built With
 ---
 - 안채웅 - Web Front-End Developer(React.js)
-- 변웅섭 - Back-End Developer(Node.js, express.js, AWS-S3,EC2, MySQL)
+- 변웅섭 - Back-End Developer(Node.js, express.js, AWS-EC2, MySQL)
