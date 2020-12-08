@@ -5,10 +5,10 @@ const {
 	getBookLoans,
 } = require('../services/user');
 
-async function register(req, res, next) {
+const register = async (req, res, next) => {
 	await registerUser(req.body);
 	res.status(201).end();
-}
+};
 
 const login = async (req, res, next) => {
 	const token = await findUser(req.body);
