@@ -13,7 +13,7 @@ RUN cd /src
 WORKDIR /src
 
 
-RUN chmod =X docker-entrypoint.sh
+RUN chmod +x docker-entrypoint.sh
 ENTRYPOINT ./docker-entrypoint.sh
 
 EXPOSE 3000
