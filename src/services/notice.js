@@ -1,10 +1,10 @@
-const db = require('../config/config');
+const { Notice } = require('../config/config');
 const HttpError = require('../exception/exception');
 const AdminService = require('./admin');
 
 const getLatestNoticeService = async (uuid) => {
 	const user = await AdminService.findOneUserByUuid(uuid);
-	return db.Notice.findOne({
+	return Notice.findOne({
 		where: { school: user.school },
 		order: [['createdAt', 'DESC']],
 		attributes: ['uuid', 'title', 'content', 'createdAt'],
@@ -13,7 +13,7 @@ const getLatestNoticeService = async (uuid) => {
 
 const getNoticeListService = async (uuid, page) => {
 	const user = await AdminService.findOneUserByUuid(uuid);
-	return db.Notice.findAll({
+	return Notice.findAll({
 		where: { school: user.school },
 		order: [['createdAt', 'DESC']],
 		attributes: ['uuid', 'title', 'content', 'createdAt'],
@@ -24,7 +24,7 @@ const getNoticeListService = async (uuid, page) => {
 
 const getDetailNoticeService = async (uuid) => {
 	try {
-		return await db.Notice.findOne({
+		return await Notice.findOne({
 			where: { uuid },
 			attributes: ['uuid', 'title', 'content', 'createdAt'],
 		});

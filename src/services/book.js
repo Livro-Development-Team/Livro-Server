@@ -1,8 +1,8 @@
 const { Op } = require('sequelize');
-const db = require('../config/config');
+const { Loan, Book } = require('../config/config');
 
 const searchByWordService = async (word, page, school) => {
-	const { rows, count } = await db.Book.findAndCoundAll({
+	const { rows, count } = await Book.findAndCoundAll({
 		where: {
 			title: {
 				[Op.like]: `%${word}%`,
@@ -33,7 +33,7 @@ const searchByWordService = async (word, page, school) => {
 };
 
 const getLoanState = async (book) => {
-	const loaned = await db.Loan.findAll({
+	const loaned = await Loan.findAll({
 		where: {
 			bookId: book.id,
 		},
@@ -47,7 +47,7 @@ const getLoanState = async (book) => {
 };
 
 const getBookInfoService = async (bookId) => {
-	return await db.Book.findOne({
+	return await Book.findOne({
 		where: {
 			id: id,
 		},
@@ -55,14 +55,14 @@ const getBookInfoService = async (bookId) => {
 };
 
 const borrowBookService = async (borrowBookInfo) => {
-	const count = await db.Loan.count({
+	const count = await Loan.count({
 		where: {
 			user_uuid: borrowBookInfo.userUuid,
 		},
 	});
 	if (count >= 3) throw new HttpError(409, 'already loaned 3books');
 
-	const book = await db.Book.findOne({
+	const book = await Book.findOne({
 		where: {
 			id: borrowBookInfo.id,
 		},

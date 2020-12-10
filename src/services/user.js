@@ -1,5 +1,5 @@
 const HttpError = require('../exception/exception');
-const db = require('../config/config');
+const { User, Loan } = require('../config/config');
 const { hashPassword } = require('../utils/hash');
 const { mkId } = require('../utils/mkId');
 const { mkAccess } = require('../utils/mkToken');
@@ -9,7 +9,7 @@ const registerUser = async (userInfo) => {
 	userInfo.password = await hashPassword(userInfo.password);
 	userInfo.uuid = 'user-' + (await mkId());
 
-	const isExisted = await db.User.findOne({
+	const isExisted = await User.findOne({
 		where: {
 			userId: userInfo.userId,
 		},
@@ -17,11 +17,11 @@ const registerUser = async (userInfo) => {
 
 	if (isExisted) throw new HttpError(409, 'userId already exists');
 
-	return await db.User.create(userInfo);
+	return await User.create(userInfo);
 };
 
 const findUser = async (userInfo) => {
-	const user = await db.User.findOne({
+	const user = await User.findOne({
 		where: {
 			userId: userInfo.userId,
 			password: await hashPassword(userInfo.password),
@@ -34,7 +34,7 @@ const findUser = async (userInfo) => {
 };
 
 const getUserInfoService = async (id) => {
-	return await db.User.findOne({
+	return await User.findOne({
 		where: {
 			uuid: id,
 		},
@@ -43,13 +43,13 @@ const getUserInfoService = async (id) => {
 };
 
 const getUserByUuid = async (id) => {
-	return await db.User.findOne({
+	return await User.findOne({
 		where: { uuid: id },
 	});
 };
 
 const getBookLoans = async (uuid) => {
-	const list = await db.Loan.findAll({
+	const list = await Loan.findAll({
 		where: {
 			user_uuid: uuid,
 		},

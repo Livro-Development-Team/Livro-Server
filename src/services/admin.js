@@ -1,4 +1,4 @@
-const db = require('../config/config');
+const { User, Notice, Book, Loan } = require('../config/config');
 const HttpError = require('../exception/exception');
 const { hashPassword } = require('../utils/hash');
 const { mkId } = require('../utils/mkId');
@@ -17,7 +17,7 @@ const adminAuthService = async (adminAuthInfo, secret) => {
 
 const findOneUser = async (userId) => {
 	try {
-		return db.User.findOne({ where: { userId } });
+		return User.findOne({ where: { userId } });
 	} catch (e) {
 		throw new HttpError(404, 'User Not Found');
 	}
@@ -25,7 +25,7 @@ const findOneUser = async (userId) => {
 
 const findOneUserByUuid = async (uuid) => {
 	try {
-		return db.User.findOne({ where: { uuid } });
+		return User.findOne({ where: { uuid } });
 	} catch (e) {
 		throw new HttpError(404, 'User Not Found');
 	}
@@ -44,7 +44,7 @@ const writeNoticeService = async (noticeInfo, uuid, admin) => {
 	const { title, content } = noticeInfo;
 	const user = await findOneUserByUuid(uuid);
 	await isAdmin(admin);
-	await db.Notice.create({
+	await Notice.create({
 		uuid: noticeId,
 		title,
 		content,
@@ -65,7 +65,7 @@ const updateNoticeService = async (updateNoticeInfo, noticeId, uuid, admin) => {
 
 const findOneNotice = async (noticeId) => {
 	try {
-		return await db.Notice.findOne({ where: { uuid: noticeId } });
+		return await Notice.findOne({ where: { uuid: noticeId } });
 	} catch (e) {
 		throw new HttpError(404, 'User Not Found');
 	}
@@ -83,16 +83,16 @@ const deleteNoticeService = async (noticeId, uuid, admin) => {
 const getLoanedBooksService = async (uuid, admin, page, date) => {
 	await isAdmin(admin);
 	const user = await findOneUserByUuid(uuid);
-	const loans = await db.Loan.findAll({
+	const loans = await Loan.findAll({
 		where: { school: user.school, deletedAt: { [Op.gte]: date } },
 		attributes: ['uuid'],
 		include: [
 			{
-				model: db.User,
+				model: User,
 				attributes: ['name', 'studentNo'],
 			},
 			{
-				model: db.Book,
+				model: Book,
 				attributes: ['title', 'author', 'publisher', 'category', 'image'],
 			},
 		],
@@ -107,16 +107,16 @@ const getLoanedBooksService = async (uuid, admin, page, date) => {
 const getDelaiedBooksService = async (uuid, admin, page, date) => {
 	await isAdmin(admin);
 	const user = await findOneUserByUuid(uuid);
-	const loans = await db.Loan.findAll({
+	const loans = await Loan.findAll({
 		where: { school: user.school, deletedAt: { [Op.lt]: date } },
 		attributes: ['uuid'],
 		include: [
 			{
-				model: db.User,
+				model: User,
 				attributes: ['name', 'studentNo'],
 			},
 			{
-				model: db.Book,
+				model: Book,
 				attributes: ['title', 'author', 'publisher', 'category', 'image'],
 			},
 		],
@@ -130,7 +130,7 @@ const getDelaiedBooksService = async (uuid, admin, page, date) => {
 
 const returnBookService = async (admin, uuid) => {
 	await isAdmin(admin);
-	await db.Loan.destroy({ where: { uuid } });
+	await Loan.destroy({ where: { uuid } });
 };
 
 module.exports = {
