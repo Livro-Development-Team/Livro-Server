@@ -2,9 +2,9 @@ const NoticeService = require('../services/notice');
 
 const getLatestNotice = async (req, res, next) => {
 	const uuid = req['decoded'].uuid;
-	const latestNotice = await NoticeService.getLatestNoticeService(uuid);
+	const notice = await NoticeService.getLatestNoticeService(uuid);
 	console.log('asdfasd', latestNotice);
-	res.status(200).json(latestNotice);
+	res.status(200).json(notice);
 };
 
 const getNoticeList = async (req, res, next) => {
