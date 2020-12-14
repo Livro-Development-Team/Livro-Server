@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const { Loan, Book } = require('../config/config');
 
 const searchByWordService = async (word, page, school) => {
-	const { rows, count } = await Book.findAndCoundAll({
+	const { rows, count } = await Book.findAndCountAll({
 		where: {
 			title: {
 				[Op.like]: `%${word}%`,
