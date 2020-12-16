@@ -7,6 +7,7 @@ const { Op } = require('sequelize');
 
 const adminAuthService = async (adminAuthInfo, secret) => {
 	const { userId, password } = adminAuthInfo;
+	// SELECT * FROM user WHERE user_id = userid;
 	const user = await findOneUser(userId);
 	if (!passwordCompare(password, user.password)) {
 		throw new HttpError(404, 'User Not Found');
@@ -16,6 +17,7 @@ const adminAuthService = async (adminAuthInfo, secret) => {
 };
 
 const findOneUser = async (userId) => {
+	// SELECT * FROM user WHERE user_id = userId;
 	try {
 		return User.findOne({ where: { userId } });
 	} catch (e) {
@@ -25,6 +27,7 @@ const findOneUser = async (userId) => {
 
 const findOneUserByUuid = async (uuid) => {
 	try {
+		//SELECT * FROM user WHERE uuid = uuid;
 		return User.findOne({ where: { uuid } });
 	} catch (e) {
 		throw new HttpError(404, 'User Not Found');
@@ -44,6 +47,7 @@ const writeNoticeService = async (noticeInfo, uuid, admin) => {
 	const { title, content } = noticeInfo;
 	const user = await findOneUserByUuid(uuid);
 	await isAdmin(admin);
+	// INSERT INTO Notice(uuid, title, content, user_uuid, school) VALUES(noticeId,title, content, uuid, user.school);
 	await Notice.create({
 		uuid: noticeId,
 		title,
@@ -65,6 +69,7 @@ const updateNoticeService = async (updateNoticeInfo, noticeId, uuid, admin) => {
 
 const findOneNotice = async (noticeId) => {
 	try {
+		// SELECT * FROM Notice WHERE uuid = noticeId;
 		return await Notice.findOne({ where: { uuid: noticeId } });
 	} catch (e) {
 		throw new HttpError(404, 'User Not Found');

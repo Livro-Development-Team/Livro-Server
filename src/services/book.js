@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const { Loan, Book } = require('../config/config');
 
 const searchByWordService = async (word, page, school) => {
+	//
 	const { rows, count } = await Book.findAndCountAll({
 		where: {
 			title: {
@@ -49,7 +50,7 @@ const getLoanState = async (book) => {
 const getBookInfoService = async (bookId) => {
 	return await Book.findOne({
 		where: {
-			id: id,
+			id: bookId,
 		},
 	});
 };
